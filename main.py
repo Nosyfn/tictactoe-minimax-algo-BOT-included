@@ -1,4 +1,4 @@
-class tictactoe:
+class Tictactoe:
     board: list[list[str]]
     player_1: str
     player_2: str
@@ -10,6 +10,7 @@ class tictactoe:
       self.player_2 = p2
       self.p1_score = 0
       self.p2_score = 0
+
     def print_board(self, board):
       result = ""
       for row in board:
@@ -18,4 +19,6 @@ class tictactoe:
 
     # def check_winner(self, board):
 
-
+if __name__ == "__main__":
+  t = Tictactoe('p1', 'p2')
+  print(t.print_board(t.board))
