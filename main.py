@@ -17,6 +17,19 @@ class Tictactoe:
         result += '|'.join(row) + '\n'
       return result
 
+    def check_winner(self, board):
+      "return True if winner is found, else False, winner is 3 in a row"
+
+    def reset_board(self):
+      "reset the board"
+
+    def new_game(self):
+      "start a new game for user"
+
+    def end_game(self):
+      "return the winner and ampount of points each team has. maybe return a percentage of how much they won"
+
+
     # def check_winner(self, board):
 
 if __name__ == "__main__":
