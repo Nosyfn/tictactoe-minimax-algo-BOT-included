@@ -18,7 +18,7 @@ class Tictactoe:
       return result
 
     def check_winner(self, board):
-      "return True if winner is found, else False, winner is 3 in a row"
+      "return True if winner is found, else False, winner is 3 in a row, update scores"
 
     def reset_board(self):
       "reset the board"
@@ -29,8 +29,11 @@ class Tictactoe:
     def end_game(self):
       "return the winner and ampount of points each team has. maybe return a percentage of how much they won"
 
+    def play(self):
+    """ take user input for which row,column they want to play at and mutate board
+    check if they are allowed to play there"""
 
-    # def check_winner(self, board):
+
 
 if __name__ == "__main__":
   t = Tictactoe('p1', 'p2')
