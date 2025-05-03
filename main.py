@@ -8,6 +8,7 @@ class board:
   def __init__(self, board=[[',', ',', ','], [',', ',', ','], [',', ',', ',']], p1: str, p2: str):
     self.board = board
     self.player_1 = p1
+    
     self.player_2 = p2
     self.p1_score = 0
     self.p2_score = 0
