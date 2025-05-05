@@ -129,35 +129,37 @@ class EasyBot:
         """Instructions for starting the game."""
 
         while not self.game.check_winner(self.game.board)[0] and self.game.check_if_moves():
-            print('current board: \n ')
+            print('Current Board: \n ')
             print(self.game.print_board())
-            move = input(
-                "what row, column would you like to play on (row, column), (row and column are in between 0 and 2: ")
-            l = move.split(',')
 
-            row = int(l[0])
-            column = int(l[1])
-
+            row = input("Row? (between 0 and 2)")
+            column = input("Column? (between 0 and 2)")
             is_valid = self.game.player_move(row, column)
+
+            # Why doesn't this have a function call after it?
             while not is_valid:
                 is_valid = input("what row, column would you like to play on (row, column), (row and column are in between 0 and 2: ")
-            print('you have made a move, here is the board now \n')
+
+            print('Here is the board after your new move: \n')
             print(self.game.print_board())
 
             moves = self.game.available_moves()
+
             if self.game.check_winner(self.game.board)[0]:
-                play = input("you have beat the robot! Type 2 to reset points and play again, 1 to play again, 0 to end game")
-                while play != '1' and play != '0' and play != '2':
+                play = input("YOU WON! Type...\n- 1 to play again\n- 2 to exit\n- 3 to reset points & play again")
+
+                while play != '0' and play != '1' and play != '2':
                     play = input('type 2 to play again and reset points, 1 to play again, 0 to quit')
-                if play == '2':
+                if play == '3':
                     self.game.new_game_with_points_reset()
                 if play == '1':
                     self.game.reset_board()
                 else:
                     self.game.end_game()
                     break
+
             elif not moves:
-                t = input('It is a tie! type 0 to end game or 1 to reset board: ')
+                t = input('It is a tie! \nType 0 to end game or 1 to reset board: ')
                 while t != '1' and t != '0':
                     t = input("type 1 to play again, 0 to end game")
                 if t == '0':
@@ -166,16 +168,19 @@ class EasyBot:
                 elif t == '1':
                     self.game.reset_board()
             else:
-                print('Time for the easy bots move!')
+
+                print('Time for the easy bot\'s move!')
                 bot_move = random.choice(moves)
                 self.game.player_move(bot_move[0], bot_move[1])
-                print(f'the bot played on spot ({bot_move[0]}, {bot_move[1]}) \n')
-                print(f"the board now looks like this: \n")
+                print(f'The bot played on position ({bot_move[0]}, {bot_move[1]}) \n')
+                print("Updated Board: \n")
                 print(self.game.print_board())
 
                 if self.game.check_winner(self.game.board)[0]:
-                    print('hahaha, you have lost to the easy bot!')
+                    print('YOU LOST!')
+
                     play = input('type 0 to end game, 1 to play again, 2 to reset points')
+
                     while play != '1' and play != '0' and play != '2':
                         play = input('type 2 to play again and reset points, 1 to play again, 0 to quit')
                     if play == '2':
@@ -185,8 +190,10 @@ class EasyBot:
                     else:
                         self.game.end_game()
                         return
+
                 elif not moves:
                     t = input('It is a tie! type 0 to end game or 1 to reset board: ')
+
                     while t != '1' and t != '0':
                         t = input("type 1 to play again, 0 to end game")
                     if t == '0':
