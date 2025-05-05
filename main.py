@@ -57,7 +57,7 @@ class Tictactoe:
         self.reset_board()
     def new_game_with_points_reset(self):
         self.reset_board()
-        self.player_1[1], self.player_2[2] = 0, 0
+        self.player_1[1], self.player_2[1] = 0, 0
 
     def end_game(self):
         """Return the winner and amount of points each team has."""
@@ -75,8 +75,10 @@ class Tictactoe:
         if self.board[row][column] == ",":
             self.board[row][column] = "X" if self.player_turn % 2 == 0 else '0'
             self.player_turn += 1
+            return True
         else:
             print('spot is already taken, try again')
+            return False
 
         # if self.check_winner(self.board):
         #     winner = self.player_1[0] if self.player_turn % 2 == 0 else self.player_2[0]
@@ -91,43 +93,98 @@ class Tictactoe:
     def available_moves(self):
         move = []
         for i in range(len(self.board)):
-            for j in range(i):
+            for j in range(len(self.board)):
                 if self.board[i][j] == ',':
                     move.append((i, j))
         return move
 
-    def easy_bot_move(self):
-        """ assume there are always moves"""
-        moves = self.available_moves()
-        bot_choice = random.choice(moves)
-        self.board[bot_choice[0]][bot_choice[1]] = 'X' if self.player_turn % 2 == 0 else '0'
-
 
 class easy_bot:
-    def __int__(self, game: Tictactoe):
+    def __init__(self, game: Tictactoe):
         self.game = game
     def start(self):
-        while not self.game.check_winner[0] and self.game.check_if_moves():
+        while not self.game.check_winner(self.game.board)[0] and self.game.check_if_moves():
             print('current board: \n ')
-            print(self.game.print_board(self.board))
-            l = move.split()
+            print(self.game.print_board())
+            move = input(
+                "what row, column would you like to play on (row, column), (row and column are in between 0 and 2: ")
+            l = move.split(',')
+
             row = int(l[0])
             column = int(l[1])
-            game.player_move(row, column)
+
+            is_valid = self.game.player_move(row, column)
+            while not is_valid:
+                is_valid = input("what row, column would you like to play on (row, column), (row and column are in between 0 and 2: ")
             print('you have made a move, here is the board now \n')
+            print(self.game.print_board())
 
             moves = self.game.available_moves()
-            while True:
-                if not moves:
-                    play = input('type 1 to play again, 0 to quit')
-                    while play != '1' or play != '0':
-                        play = input('type 1 to play again, 0 to quit')
+            if self.game.check_winner(self.game.board)[0]:
+                play = input("you have beat the robot! Type 2 to reset points and play again, 1 to play again, 0 to end game")
+                while play != '1' and play != '0' and play != '2':
+                    play = input('type 2 to play again and reset points, 1 to play again, 0 to quit')
+                if play == '2':
+                    self.game.new_game_with_points_reset()
+                if play == '1':
+                    self.game.reset_board()
+                else:
+                    self.game.end_game()
+                    break
+            elif not moves:
+                t = input('It is a tie! type 0 to end game or 1 to reset board: ')
+                while t != '1' and t != '0':
+                    t = input("type 1 to play again, 0 to end game")
+                if t == '0':
+                    self.game.end_game()
+                    break
+                elif t == '1':
+                    self.game.reset_board()
+            else:
+                print('Time for the easy bots move!')
+                bot_move = random.choice(moves)
+                self.game.player_move(bot_move[0], bot_move[1])
+                print(f'the bot played on spot ({bot_move[0]}, {bot_move[1]}) \n')
+                print(f"the board now looks like this: \n")
+                print(self.game.print_board())
+
+                if self.game.check_winner(self.game.board)[0]:
+                    print('hahaha, you have lost to the easy bot!')
+                    play = input('type 0 to end game, 1 to play again, 2 to reset points')
+                    while play != '1' and play != '0' and play != '2':
+                        play = input('type 2 to play again and reset points, 1 to play again, 0 to quit')
+                    if play == '2':
+                        self.game.new_game_with_points_reset()
                     if play == '1':
-                        game.reset_board()
+                        self.game.reset_board()
                     else:
-                        game.end_game()
+                        self.game.end_game()
+                        return
+                elif not moves:
+                    t = input('It is a tie! type 0 to end game or 1 to reset board: ')
+                    while t != '1' and t != '0':
+                        t = input("type 1 to play again, 0 to end game")
+                    if t == '0':
+                        self.game.end_game()
+                        is_break = True
                         break
-            #bot move
+                    elif t == '1':
+                        self.game.reset_board()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -154,7 +211,7 @@ def main():
                 print("here is the current board")
                 print(game.print_board())
                 move = input("what row, column would you like to play on (row, column), (row and column are in between 0 and 2: ")
-                l = move.split()
+                l = move.split(',')
                 row = int(l[0])
                 column = int(l[1])
                 game.player_move(row, column)
@@ -174,6 +231,13 @@ def main():
                         game.new_game_with_points_reset()
 
         if player_or_bot == '2':
+            name = input('what is your name: ')
+            bot = input('name your bot: ')
+            game = Tictactoe(name, bot)
+            bot = easy_bot(game)
+            bot.start()
+
+
 
 
 
