@@ -65,6 +65,10 @@ class Tictactoe:
 
         print("STARTING A NEW GAME!")
         self.reset_board()
+
+    def new_game_with_points_reset(self):
+        """Start a new game, while resetting all player points to 0."""
+        self.reset_board()
         self.player_1[1], self.player_2[1] = 0, 0
 
     def end_game(self):
@@ -115,12 +119,15 @@ class Tictactoe:
         return move
 
 
-class easy_bot:
+class EasyBot:
+    """Implementing the EASY bot for the Tic-Tac-Toe game."""
 
     def __init__(self, game: Tictactoe):
         self.game = game
 
     def start(self):
+        """Instructions for starting the game."""
+
         while not self.game.check_winner(self.game.board)[0] and self.game.check_if_moves():
             print('current board: \n ')
             print(self.game.print_board())
@@ -190,8 +197,9 @@ class easy_bot:
                         self.game.reset_board()
 
 
-
 def main():
+    """Main class for the Tic-Tac-Toe game."""
+
     while True:
         player_or_bot = input('TYPE...\n- 1 to play a FRIEND\n- 2 to play an EASY bot\n- 3 to play a HARD bot\n- 4 to '
                               'WATCH two bots play')
@@ -211,20 +219,23 @@ def main():
                     else:
                         game.end_game()
                         break
-                print("here is the current board")
+
+                print("Current Board:")
                 print(game.print_board())
-                move = input("what row, column would you like to play on (row, column), (row and column are in between 0 and 2: ")
-                l = move.split(',')
-                row = int(l[0])
-                column = int(l[1])
+
+                row = input("Row? (between 0 and 2)")
+                column = input("Column? (between 0 and 2)")
                 game.player_move(row, column)
+
                 is_over = game.check_winner(game.board)
+
                 if is_over[0]:
                     print(f'The winner is {is_over[1]}')
-                    print('current score:')
-                    print(f'player 1 has {game.player_1[1]} points')
-                    print(f'player 2 has {game.player_2[1]} points')
-                    t = input('type 1 to play again, 2 to end game or 3 to reset points and play again')
+                    print('Current score:')
+                    print(f'Player 1 has {game.player_1[1]} points')
+                    print(f'Player 2 has {game.player_2[1]} points')
+
+                    t = input('TYPE...\n- 1 to play again\n- 2 to exit\n- 3 to reset points & play again')
                     if t == '1':
                         game.new_game()
                     elif t == '2':
@@ -234,12 +245,12 @@ def main():
                         game.new_game_with_points_reset()
 
         if player_or_bot == '2':
-            name = input('what is your name: ')
-            bot = input('name your bot: ')
+            name = input('What is your name?: ')
+            bot = input('Name your bot: ')
             game = Tictactoe(name, bot)
-            bot = easy_bot(game)
+            bot = EasyBot(game)
             bot.start()
 
 
 if __name__ == "__main__":
-  main()
+    main()
