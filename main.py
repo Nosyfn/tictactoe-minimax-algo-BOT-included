@@ -78,6 +78,8 @@ class Tictactoe:
         if self.board[row][column] == ",":
             self.board[row][column] = "X" if self.player_turn % 2 == 0 else '0'
             self.player_turn += 1
+        else:
+            print('spot is already taken, try again')
 
         # if self.check_winner(self.board):
         #     winner = self.player_1[0] if self.player_turn % 2 == 0 else self.player_2[0]
