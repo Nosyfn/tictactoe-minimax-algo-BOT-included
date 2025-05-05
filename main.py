@@ -1,4 +1,5 @@
 import random
+
 class Tictactoe:
     board: list[list[str]]
     player_1: list
@@ -10,6 +11,7 @@ class Tictactoe:
         self.player_2 = [p2, 0]
         self.player_turn = 0
         # if self.player_move is even, it is player 1 turn so use X, else 0
+
     def print_board(self):
         result = ""
         for row in self.board:
