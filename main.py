@@ -1,6 +1,9 @@
 import random
 
+
 class Tictactoe:
+    """A Python implementation of Tic-Tac-Toe."""
+
     board: list[list[str]]
     player_1: list
     player_2: list
@@ -51,40 +54,47 @@ class Tictactoe:
 
     def reset_board(self):
         """Reset the board."""
+
         self.board = [[',', ',', ','], [',', ',', ','], [',', ',', ',']]
 
     def new_game(self):
         """Start a new game for user."""
-        print("new game starting")
-        self.reset_board()
-    def new_game_with_points_reset(self):
+
+        # Comment: I updated the points for both players to 0 & combined this with new_game_with_points_reset b/c
+        # it was pretty much the same.
+
+        print("STARTING A NEW GAME!")
         self.reset_board()
         self.player_1[1], self.player_2[1] = 0, 0
 
     def end_game(self):
         """Return the winner and amount of points each team has."""
-        if self.p2_score == self.p1_score:
-            return f'No winner! player 1 had {self.p1_score} points and player 2 had {self.p2_score} points'
+        if self.player_2[1] == self.player_1[1]:
+            return f'Both players have {self.player_1[1]} points, hence it\'s a TIE!'
 
         winner = self.player_1 if self.player_1[1] > self.player_2[1] else self.player_2
         second = self.player_1 if winner == self.player_2 else self.player_2
 
-        return f'The winner is {winner} with {winner[1]} points, beating {second} with {second[1]} points'
+        return f'The winner is {winner} with {winner[1]} points, beating {second} with {second[1]} points!'
 
     def player_move(self, row, column):
         """Take user input for move and update board"""
 
         if self.board[row][column] == ",":
-            self.board[row][column] = "X" if self.player_turn % 2 == 0 else '0'
+
+            if self.player_turn % 2 == 0:
+                self.board[row][column] = "X"
+            else:
+                self.board[row][column] = "O"
+
             self.player_turn += 1
+
             return True
         else:
-            print('spot is already taken, try again')
+            print('This spot is already taken!')
+
             return False
 
-        # if self.check_winner(self.board):
-        #     winner = self.player_1[0] if self.player_turn % 2 == 0 else self.player_2[0]
-        #     return f'{winner} has won this round'
     def check_if_moves(self):
         """check if there are still moves"""
         for i in self.board:
@@ -93,6 +103,10 @@ class Tictactoe:
         return False
 
     def available_moves(self):
+        """ Return a list of the remaining spaces on the board, in the form (row, column).
+
+        Note: Columns & rows both start at index 0
+        """
         move = []
         for i in range(len(self.board)):
             for j in range(len(self.board)):
@@ -102,8 +116,10 @@ class Tictactoe:
 
 
 class easy_bot:
+
     def __init__(self, game: Tictactoe):
         self.game = game
+
     def start(self):
         while not self.game.check_winner(self.game.board)[0] and self.game.check_if_moves():
             print('current board: \n ')
@@ -175,31 +191,16 @@ class easy_bot:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def main():
     while True:
-        player_or_bot = input('type 1 to play against a friend, 2 for a bot (easy mode), 3 for hard mode and 4 to watch two bots play ')
+        player_or_bot = input('TYPE...\n- 1 to play a FRIEND\n- 2 to play an EASY bot\n- 3 to play a HARD bot\n- 4 to '
+                              'WATCH two bots play')
+
         if player_or_bot == '1':
-            name1 = input("player1 name: ")
-            name2 = input('player2 name: ')
+            name1 = input("Player 1's name: ")
+            name2 = input('Player 2\'s name: ')
             game = Tictactoe(name1, name2)
+
             while True:
                 if not game.available_moves():
                     play = input('type 1 to play again, 0 to quit')
@@ -238,30 +239,6 @@ def main():
             game = Tictactoe(name, bot)
             bot = easy_bot(game)
             bot.start()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
