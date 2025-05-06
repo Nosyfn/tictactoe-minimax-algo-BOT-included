@@ -65,11 +65,13 @@ class Tictactoe:
 
         print("STARTING A NEW GAME!")
         self.reset_board()
+        self.player_turn = 0
 
     def new_game_with_points_reset(self):
         """Start a new game, while resetting all player points to 0."""
         self.reset_board()
         self.player_1[1], self.player_2[1] = 0, 0
+        self.player_turn = 0
 
     def end_game(self):
         """Return the winner and amount of points each team has."""
@@ -137,6 +139,7 @@ class EasyBot:
             is_valid = self.game.player_move(row, column)
 
             # Why doesn't this have a function call after it?
+            # wdym by that? what function call would it have?
             while not is_valid:
                 is_valid = input("what row, column would you like to play on (row, column), (row and column are in between 0 and 2: ")
 
