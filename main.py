@@ -166,7 +166,6 @@ class easy_bot:
                         t = input("type 1 to play again, 0 to end game")
                     if t == '0':
                         self.game.end_game()
-                        is_break = True
                         break
                     elif t == '1':
                         self.game.reset_board()
