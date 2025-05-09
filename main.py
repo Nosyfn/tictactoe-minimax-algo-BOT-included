@@ -1,4 +1,5 @@
 import random
+
 class Tictactoe:
     """A Python implementation of Tic-Tac-Toe."""
 
@@ -31,8 +32,8 @@ class Tictactoe:
             if word == p2_win:
                 self.player_2[1] += 1
                 return True, self.player_2[0], "O"
-        diagonal1 =  board[0][0] + board[1][1] + board[2][2]
-        diagonal2 = board[2][2] + board[1][1] + board[0][0]
+        diagonal1 = board[0][0] + board[1][1] + board[2][2]
+        diagonal2 = board[2][0] + board[1][1] + board[0][2]
         if diagonal1 == p1_win or diagonal2 == p1_win:
             self.player_1[1] += 1
             return True, self.player_1[0], "X"
@@ -127,45 +128,45 @@ class Tictactoe:
                 return False
         return True
 
-def player_vs_player():
-    name1 = input("Player 1's name: ")
-    name2 = input('Player 2\'s name: ')
-    game = Tictactoe(name1, name2)
+    def player_vs_player():
+        name1 = input("Player 1's name: ")
+        name2 = input('Player 2\'s name: ')
+        game = Tictactoe(name1, name2)
 
-    while True:
-        if not game.available_moves():
-            play = input('type 1 to play again, 0 to quit')
-            while play != '1' or play != '0':
+        while True:
+            if not game.available_moves():
                 play = input('type 1 to play again, 0 to quit')
-            if play == '1':
-                game.reset_board()
-            else:
-                game.end_game()
-                break
+                while play != '1' or play != '0':
+                    play = input('type 1 to play again, 0 to quit')
+                if play == '1':
+                    game.reset_board()
+                else:
+                    game.end_game()
+                    break
 
-        print("Current Board:")
-        print(game.print_board())
+            print("Current Board:")
+            print(game.print_board())
 
-        row = int(input("Row? (between 0 and 2)"))
-        column = int(input("Column? (between 0 and 2)"))
-        game.player_move(row, column)
+            row = int(input("Row? (between 0 and 2)"))
+            column = int(input("Column? (between 0 and 2)"))
+            game.player_move(row, column)
 
-        is_over = game.check_winner(game.board)
+            is_over = game.check_winner(game.board)
 
-        if is_over[0]:
-            print(f'The winner is {is_over[1]}')
-            print('Current score:')
-            print(f'Player 1 has {game.player_1[1]} points')
-            print(f'Player 2 has {game.player_2[1]} points \n')
+            if is_over[0]:
+                print(f'The winner is {is_over[1]}')
+                print('Current score:')
+                print(f'Player 1 has {game.player_1[1]} points')
+                print(f'Player 2 has {game.player_2[1]} points \n')
 
-            t = input('TYPE...\n- 1 to play again\n- 2 to exit\n- 3 to reset points & play again')
-            if t == '1':
-                game.new_game()
-            elif t == '2':
-                game.end_game()
-                break
-            elif t == '3':
-                game.new_game_with_points_reset()
+                t = input('TYPE...\n- 1 to play again\n- 2 to exit\n- 3 to reset points & play again')
+                if t == '1':
+                    game.new_game()
+                elif t == '2':
+                    game.end_game()
+                    break
+                elif t == '3':
+                    game.new_game_with_points_reset()
 
 
 class EasyBot:
@@ -185,8 +186,6 @@ class EasyBot:
             column = int(input("Column? (between 0 and 2)"))
             is_valid = self.game.player_move(row, column)
 
-            # Why doesn't this have a function call after it?
-            # ok fixed.
             while not is_valid:
                 row = int(input("Row? (between 0 and 2)"))
                 column = int(input("Column? (between 0 and 2)"))
@@ -257,11 +256,12 @@ class EasyBot:
 
 class ExpertBot:
     game: Tictactoe
+
     def __init__(self, game: Tictactoe):
         self.game = game
 
     def minimax(self, cur_maximizing):
-        """ function that will maximize the current move for the bot. <cur_maximizing
+        """ A function that will maximize the current move for the bot. <cur_maximizing
         ensures the function knows if we are minimizing or maximizing a letter"""
 
         win = self.game.check_winner(self.game.board)[2]
@@ -296,6 +296,8 @@ class ExpertBot:
 
 
     def find_move(self):
+        """Return the best possible move to maximize the score."""
+
         best_score = float('-inf')
         move = (0, 0)
         for i in range(3):
@@ -311,6 +313,7 @@ class ExpertBot:
         return move
 
     def play(self):
+
         while not self.game.check_winner(self.game.board)[0] and self.game.check_if_moves():
             print('Current Board: \n ')
             print(self.game.print_board())
@@ -340,7 +343,8 @@ class ExpertBot:
                     self.game.reset_board()
                 else:
                     print(self.game.end_game())
-                    break
+                    return
+                break
 
             elif not moves:
                 t = input('It is a tie! \nType 0 to end game or 1 to reset board: ')
@@ -348,7 +352,7 @@ class ExpertBot:
                     t = input("type 1 to play again, 0 to end game")
                 if t == '0':
                     self.game.end_game()
-                    break
+                    return
                 elif t == '1':
                     self.game.reset_board()
             else:
@@ -373,6 +377,7 @@ class ExpertBot:
                     else:
                         self.game.end_game()
                         return
+                    break
 
                 elif not moves:
                     t = input('It is a tie! type 0 to end game or 1 to reset board: ')
